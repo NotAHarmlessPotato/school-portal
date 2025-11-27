@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn.addEventListener('click', () => {
       dropdownMenu.classList.toggle('show');
     });
-
     window.addEventListener('click', (e) => {
       if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.classList.remove('show');
@@ -23,37 +22,46 @@ document.addEventListener('DOMContentLoaded', () => {
     themeCircles.forEach(c => c.classList.remove('active'));
   }
 
+  function applyTheme(theme) {
+    document.body.classList.remove('dark-theme', 'light-theme', 'green-theme', 'blue-theme', 'purple-theme');
+    document.body.classList.add(theme);
+    clearActive();
+    const circle = dropdownMenu.querySelector(`.theme-circle[data-theme="${theme.replace('-theme','')}"]`);
+    if(circle) circle.classList.add('active');
+    localStorage.setItem('theme', theme);
+  }
+
   themeCircles.forEach(circle => {
     circle.addEventListener('click', () => {
       const theme = circle.getAttribute('data-theme') + '-theme';
-      document.body.classList.remove('dark-theme', 'light-theme', 'green-theme', 'blue-theme', 'purple-theme');
-      document.body.classList.add(theme);
-      clearActive();
-      circle.classList.add('active');
+      applyTheme(theme);
     });
   });
 
-  const defaultCircle = dropdownMenu ? dropdownMenu.querySelector('.theme-circle[data-theme="light"]') : null;
-  if (defaultCircle) {
-    defaultCircle.classList.add('active');
-    document.body.classList.add('light-theme');
-  }
+  // Apply saved theme or default
+  const savedTheme = localStorage.getItem('theme') || 'light-theme';
+  applyTheme(savedTheme);
 
   // ---------- BACKGROUND EFFECT TOGGLE ----------
   const toggleEffects = document.getElementById('toggle-effects');
   const snowContainer = document.getElementById('snow');
-
   if (toggleEffects && snowContainer) {
     toggleEffects.addEventListener('change', () => {
       snowContainer.style.display = toggleEffects.checked ? 'block' : 'none';
+      localStorage.setItem('effects', toggleEffects.checked);
     });
+    // Load saved state
+    const effectsSaved = localStorage.getItem('effects');
+    if (effectsSaved !== null) {
+      toggleEffects.checked = (effectsSaved === 'true');
+      snowContainer.style.display = toggleEffects.checked ? 'block' : 'none';
+    }
   }
 
   // ---------- SNOW EFFECT ----------
   if (snowContainer) {
     const snowflakeCount = 80;
     const snowChars = ['❄', '✻', '✼', '❅', '❆'];
-
     for (let i = 0; i < snowflakeCount; i++) {
       const snowflake = document.createElement('div');
       snowflake.classList.add('snowflake');
@@ -81,52 +89,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector(".cards-container");
   const cards = Array.from(container.querySelectorAll(".card-wrapper"));
 
-  // Save original order
-  cards.forEach((card, index) => card.dataset.originalIndex = index);
+  // Give each card a unique ID if not already set
+  cards.forEach((card, index) => {
+    if(!card.dataset.id) card.dataset.id = `card-${index}`;
+  });
 
-  let favoriteCounter = 0;
-  let showOnlyFavorites = false;
-
-  // Add favorite stars to cards
+  // Load saved favorites
+  const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
   cards.forEach(card => {
     const star = document.createElement("button");
     star.type = "button";
     star.className = "favorite-star";
-    star.textContent = "☆";
-    star.setAttribute("aria-pressed", "false");
-    star.dataset.favoriteOrder = -1;
+    star.textContent = savedFavorites.includes(card.dataset.id) ? "★" : "☆";
+    if(savedFavorites.includes(card.dataset.id)) star.classList.add('filled');
+    star.setAttribute("aria-pressed", star.classList.contains('filled'));
+    card.prepend(star);
 
-    star.addEventListener("click", e => {
+    star.addEventListener('click', e => {
       e.stopPropagation();
-      const isFav = star.classList.toggle("filled");
+      const isFav = star.classList.toggle('filled');
       star.textContent = isFav ? "★" : "☆";
       star.setAttribute("aria-pressed", isFav);
 
-      star.dataset.favoriteOrder = isFav ? favoriteCounter++ : -1;
+      // Save favorites in localStorage
+      const updatedFavorites = cards
+        .filter(c => c.querySelector('.favorite-star').classList.contains('filled'))
+        .map(c => c.dataset.id);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
 
       reorderCards();
       updateCardVisibility();
     });
-
-    card.prepend(star);
   });
 
-  // Reorder cards so favorites appear first in order clicked
   function reorderCards() {
-    const sorted = cards.slice().sort((a, b) => {
-      const favA = Number(a.querySelector('.favorite-star').dataset.favoriteOrder);
-      const favB = Number(b.querySelector('.favorite-star').dataset.favoriteOrder);
-
-      if (favA !== -1 && favB !== -1) return favA - favB;
-      if (favA !== -1) return -1;
-      if (favB !== -1) return 1;
+    const sorted = cards.slice().sort((a,b) => {
+      const favA = a.querySelector('.favorite-star').classList.contains('filled');
+      const favB = b.querySelector('.favorite-star').classList.contains('filled');
+      if(favA && !favB) return -1;
+      if(!favA && favB) return 1;
       return Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
     });
-
     sorted.forEach(card => container.appendChild(card));
   }
 
-  // Update visibility based on search & favorites toggle
+  let showOnlyFavorites = false;
+
   function updateCardVisibility() {
     const query = searchInput.value.toLowerCase();
     cards.forEach(card => {
@@ -137,16 +145,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Search input listener
   searchInput.addEventListener("input", updateCardVisibility);
 
-  // Favorites toggle button
-  if (toggleFavoritesBtn) {
-    toggleFavoritesBtn.addEventListener("click", () => {
+  if(toggleFavoritesBtn){
+    toggleFavoritesBtn.addEventListener('click', () => {
       showOnlyFavorites = !showOnlyFavorites;
       toggleFavoritesBtn.classList.toggle("active", showOnlyFavorites);
       updateCardVisibility();
     });
   }
+
+  // Initial ordering and visibility
+  reorderCards();
+  updateCardVisibility();
 
 });
