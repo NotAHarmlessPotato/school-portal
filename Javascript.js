@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn.addEventListener('click', () => {
       dropdownMenu.classList.toggle('show');
     });
+
     window.addEventListener('click', (e) => {
       if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.classList.remove('show');
@@ -18,50 +19,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------- THEME SWITCHING ----------
   const themeCircles = dropdownMenu ? dropdownMenu.querySelectorAll('.theme-circle') : [];
 
-  function clearActive() {
-    themeCircles.forEach(c => c.classList.remove('active'));
-  }
-
-  function applyTheme(theme) {
+  function setTheme(theme) {
     document.body.classList.remove('dark-theme', 'light-theme', 'green-theme', 'blue-theme', 'purple-theme');
     document.body.classList.add(theme);
-    clearActive();
-    const circle = dropdownMenu.querySelector(`.theme-circle[data-theme="${theme.replace('-theme','')}"]`);
-    if(circle) circle.classList.add('active');
     localStorage.setItem('theme', theme);
+    themeCircles.forEach(c => c.classList.remove('active'));
+    document.querySelector(`.theme-circle[data-theme="${theme.replace('-theme','')}"]`)?.classList.add('active');
   }
+
+  // Load saved theme or default
+  const savedTheme = localStorage.getItem('theme') || 'light-theme';
+  setTheme(savedTheme);
 
   themeCircles.forEach(circle => {
     circle.addEventListener('click', () => {
-      const theme = circle.getAttribute('data-theme') + '-theme';
-      applyTheme(theme);
+      setTheme(circle.getAttribute('data-theme') + '-theme');
     });
   });
-
-  // Apply saved theme or default
-  const savedTheme = localStorage.getItem('theme') || 'light-theme';
-  applyTheme(savedTheme);
 
   // ---------- BACKGROUND EFFECT TOGGLE ----------
   const toggleEffects = document.getElementById('toggle-effects');
   const snowContainer = document.getElementById('snow');
+
   if (toggleEffects && snowContainer) {
     toggleEffects.addEventListener('change', () => {
       snowContainer.style.display = toggleEffects.checked ? 'block' : 'none';
-      localStorage.setItem('effects', toggleEffects.checked);
     });
-    // Load saved state
-    const effectsSaved = localStorage.getItem('effects');
-    if (effectsSaved !== null) {
-      toggleEffects.checked = (effectsSaved === 'true');
-      snowContainer.style.display = toggleEffects.checked ? 'block' : 'none';
-    }
   }
 
   // ---------- SNOW EFFECT ----------
   if (snowContainer) {
     const snowflakeCount = 80;
     const snowChars = ['❄', '✻', '✼', '❅', '❆'];
+
     for (let i = 0; i < snowflakeCount; i++) {
       const snowflake = document.createElement('div');
       snowflake.classList.add('snowflake');
@@ -88,53 +78,64 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleFavoritesBtn = document.getElementById("toggleFavorites");
   const container = document.querySelector(".cards-container");
   const cards = Array.from(container.querySelectorAll(".card-wrapper"));
-
-  // Give each card a unique ID if not already set
-  cards.forEach((card, index) => {
-    if(!card.dataset.id) card.dataset.id = `card-${index}`;
-  });
+  let showOnlyFavorites = false;
 
   // Load saved favorites
   const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  cards.forEach(card => {
+
+  // Add favorite stars and set initial favorites
+  cards.forEach((card, index) => {
     const star = document.createElement("button");
     star.type = "button";
     star.className = "favorite-star";
-    star.textContent = savedFavorites.includes(card.dataset.id) ? "★" : "☆";
-    if(savedFavorites.includes(card.dataset.id)) star.classList.add('filled');
-    star.setAttribute("aria-pressed", star.classList.contains('filled'));
+
+    const isFav = savedFavorites.includes(index);
+    star.textContent = isFav ? "★" : "☆";
+    if (isFav) star.classList.add("filled");
+    star.dataset.favoriteOrder = isFav ? savedFavorites.indexOf(index) : -1;
+
+    // Always prepend star
     card.prepend(star);
 
-    star.addEventListener('click', e => {
+    star.addEventListener("click", e => {
       e.stopPropagation();
-      const isFav = star.classList.toggle('filled');
-      star.textContent = isFav ? "★" : "☆";
-      star.setAttribute("aria-pressed", isFav);
+      const nowFav = star.classList.toggle("filled");
+      star.textContent = nowFav ? "★" : "☆";
+      star.dataset.favoriteOrder = nowFav ? getNextFavoriteOrder() : -1;
 
-      // Save favorites in localStorage
-      const updatedFavorites = cards
-        .filter(c => c.querySelector('.favorite-star').classList.contains('filled'))
-        .map(c => c.dataset.id);
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-
+      saveFavorites();
       reorderCards();
       updateCardVisibility();
     });
   });
 
+  function getNextFavoriteOrder() {
+    const orders = cards
+      .map(c => Number(c.querySelector('.favorite-star').dataset.favoriteOrder))
+      .filter(o => o !== -1);
+    return orders.length ? Math.max(...orders) + 1 : 0;
+  }
+
+  function saveFavorites() {
+    const currentFavs = cards
+      .map((c, i) => c.querySelector('.favorite-star').classList.contains('filled') ? i : -1)
+      .filter(i => i !== -1);
+    localStorage.setItem('favorites', JSON.stringify(currentFavs));
+  }
+
   function reorderCards() {
-    const sorted = cards.slice().sort((a,b) => {
-      const favA = a.querySelector('.favorite-star').classList.contains('filled');
-      const favB = b.querySelector('.favorite-star').classList.contains('filled');
-      if(favA && !favB) return -1;
-      if(!favA && favB) return 1;
+    const sorted = cards.slice().sort((a, b) => {
+      const favA = Number(a.querySelector('.favorite-star').dataset.favoriteOrder);
+      const favB = Number(b.querySelector('.favorite-star').dataset.favoriteOrder);
+      if (favA !== -1 && favB !== -1) return favA - favB;
+      if (favA !== -1) return -1;
+      if (favB !== -1) return 1;
       return Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
     });
     sorted.forEach(card => container.appendChild(card));
   }
 
-  let showOnlyFavorites = false;
-
+  // ---------- SEARCH & FAVORITES TOGGLE ----------
   function updateCardVisibility() {
     const query = searchInput.value.toLowerCase();
     cards.forEach(card => {
@@ -147,15 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener("input", updateCardVisibility);
 
-  if(toggleFavoritesBtn){
-    toggleFavoritesBtn.addEventListener('click', () => {
+  if (toggleFavoritesBtn) {
+    toggleFavoritesBtn.addEventListener("click", () => {
       showOnlyFavorites = !showOnlyFavorites;
       toggleFavoritesBtn.classList.toggle("active", showOnlyFavorites);
       updateCardVisibility();
     });
   }
 
-  // Initial ordering and visibility
+  // ---------- INITIALIZE ----------
+  // Save original order
+  cards.forEach((card, index) => card.dataset.originalIndex = index);
   reorderCards();
   updateCardVisibility();
 
