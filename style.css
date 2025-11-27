@@ -148,10 +148,9 @@ body.light-theme .favorite-star {
 
    												 /* ---------- CONTENT ---------- */
 .card-content {
-    padding: 20px 18px 22px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* keeps button at bottom */
+    justify-content: space-between; /* keeps button at the bottom */
     flex-grow: 1;
 }
     .card-title {
@@ -171,7 +170,11 @@ body.light-theme .favorite-star {
 
    												 /* ---------- BUTTON / BADGE ---------- */
 .card-action {
-    display: inline-block;
+    display: block;                  /* block-level for width control */
+    width: 200px;                     /* fixed width for all buttons */
+    max-width: 90%;                   /* responsive fallback on small screens */
+    text-align: center;
+    margin: 0 auto;                   /* center inside card */
     padding: 11px 16px;
     background: linear-gradient(135deg, #7c2fff, #b388ff);
     color: white;
@@ -184,9 +187,10 @@ body.light-theme .favorite-star {
 
 .card-action:hover {
     background: linear-gradient(135deg, #9d4dff, #c2a0ff);
-    transform: translateY(-3px); /* uniform lift */
-    box-shadow: 0 10px 30px rgba(124, 47, 255, 0.7); /* strong purple shadow */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(124, 47, 255, 0.7);
 }
+
 
     												/* ---------- RESPONSIVE ---------- */
     @media (max-width: 768px) {
@@ -726,3 +730,4 @@ input:checked + .slider:before {
     top: 8px;
     right: 8px;
 }
+
