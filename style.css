@@ -150,23 +150,25 @@ body.light-theme .favorite-star {
 .card-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* keeps button at the bottom */
+    justify-content: space-between; /* keep button at bottom */
     flex-grow: 1;
+    padding: 20px; /* optional for spacing */
 }
-    .card-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #ede9fe; /* very light purple/white */
-        margin-bottom: 8px;
-    }
 
-    .card-description {
-        font-size: 1rem;
-        line-height: 1.55;
-        color: #c7b9ff; /* readable pastel purple */
-        margin-bottom: 18px;
-        min-height: 0px;
-    }
+.card-title,
+.card-description {
+    text-align: center;  /* centers text horizontally */
+}
+
+/* Optional: smoother reading */
+.card-title {
+    margin-bottom: 8px;
+}
+
+.card-description {
+    margin-bottom: 18px;
+    line-height: 1.6; /* slightly more readable */
+}
 
    												 /* ---------- BUTTON / BADGE ---------- */
 .card-action {
@@ -730,4 +732,5 @@ input:checked + .slider:before {
     top: 8px;
     right: 8px;
 }
+
 
