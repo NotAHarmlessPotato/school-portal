@@ -1,0 +1,728 @@
+   												/* ---------- GENERAL STYLING ---------- */
+.page-header {
+    position: relative; /* important for ::before */
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 50px 20px;
+    border-radius: 20px;
+    background: var(--header-bg);
+    box-shadow: 0 16px 50px var(--strong-shadow), 0 6px 20px var(--strong-shadow);
+    overflow: hidden;
+}
+
+.page-header h1 {
+    position: relative; /* ensures text above dots */
+    z-index: 2;
+    font-family: 'Playfair Display', serif; /* your fancy font */
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-shadow: 0 4px 12px var(--strong-shadow), 0 2px 6px var(--strong-shadow);
+    margin: 0;
+}
+
+/* Moving dots behind header text */
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* behind text */
+    pointer-events: none;
+    background-image: radial-gradient(rgba(124,47,255,0.25) 2px, transparent 2px);
+    background-size: 20px 20px;
+    animation: moveDots 30s linear infinite;
+}
+
+@keyframes moveDots {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+@keyframes moveDots {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    justify-content: center;
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 10px; /* small padding to prevent card touching edges */
+}
+
+    												/* ---------- CARD WRAPPER ---------- */
+.card-wrapper {
+    width: 300px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color, rgba(168,85,247,0.15));
+    box-shadow: 0 6px 18px var(--strong-shadow, var(--shadow-color));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* ensures buttons align at bottom */
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    min-height: 380px; /* ensures uniform card height */
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    will-change: transform, box-shadow;
+}
+.card-wrapper:hover {
+    transform: translateY(-6px);
+    box-shadow: 
+        0 18px 50px var(--strong-shadow, var(--shadow-color)),
+        0 10px 30px var(--strong-shadow, var(--shadow-color));
+    border-color: var(--accent-color);
+}
+                                                            /* ---------- Favorite ---------- */
+/* Favorite star (clear, tappable, theme-aware) */
+.favorite-star {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  color: rgba(255,255,255,0.85);     /* visible on dark */
+  background: rgba(0,0,0,0.25);      /* subtle circle behind star */
+  border-radius: 50%;
+  z-index: 60;                        /* ensure it's above images */
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* adjusts for light theme so star still visible */
+body.light-theme .favorite-star {
+  color: rgba(20,20,30,0.9);
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 6px 18px rgba(124,47,255,0.08);
+}
+
+/* hover / active */
+.favorite-star:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+}
+
+/* filled (favorite) state: gold / or theme accent if you prefer purple) */
+.favorite-star.filled {
+  color: #ffd166; /* gold filled star */
+  background: radial-gradient(circle, rgba(255,214,102,0.12), transparent 50%);
+  box-shadow: 0 8px 26px rgba(255,169,41,0.18);
+}
+
+/* accessibility focus */
+.favorite-star:focus {
+  outline: 2px solid rgba(124,47,255,0.25);
+  outline-offset: 4px;
+}
+
+    												/* ---------- IMAGE ---------- */
+    .card-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        filter: brightness(0.85);
+        transition: filter 0.3s ease;
+    }
+
+    .card-wrapper:hover .card-img {
+        filter: brightness(0.95);
+    }
+
+   												 /* ---------- CONTENT ---------- */
+.card-content {
+    padding: 20px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* keeps button at bottom */
+    flex-grow: 1;
+}
+    .card-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #ede9fe; /* very light purple/white */
+        margin-bottom: 8px;
+    }
+
+    .card-description {
+        font-size: 1rem;
+        line-height: 1.55;
+        color: #c7b9ff; /* readable pastel purple */
+        margin-bottom: 18px;
+        min-height: 0px;
+    }
+
+   												 /* ---------- BUTTON / BADGE ---------- */
+.card-action {
+    display: inline-block;
+    padding: 11px 16px;
+    background: linear-gradient(135deg, #7c2fff, #b388ff);
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 18px rgba(124, 47, 255, 0.6);
+}
+
+.card-action:hover {
+    background: linear-gradient(135deg, #9d4dff, #c2a0ff);
+    transform: translateY(-3px); /* uniform lift */
+    box-shadow: 0 10px 30px rgba(124, 47, 255, 0.7); /* strong purple shadow */
+}
+
+    												/* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+        .card-wrapper {
+            width: 100%;
+            max-width: 360px;
+        }
+    }
+
+												/* ---------- HEADER ---------- */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: var(--header-bg); /* now uses theme variable */
+    border-radius: 20px;
+
+    /* Uses THEME shadow instead of fixed purple */
+    box-shadow: 0 8px 25px var(--shadow-color);
+
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.page-header:hover {
+    /* Stronger hover shadow, uses theme color */
+    box-shadow: 0 12px 35px var(--shadow-color);
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-color); /* theme text color */
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+
+    /* Text glow matches theme accent */
+    text-shadow: 0 2px 8px var(--shadow-color);
+}
+
+												/* ---------- THEME SWITCHER ---------- */
+
+.theme-circle[data-theme="dark"] {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #000000 0%, #000000 50%, #D70F26 50%, #D70F26 100%);
+}
+
+
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    display: flex;
+    gap: 10px;
+}
+
+.theme-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.theme-circle:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Active theme highlight */
+.theme-circle.active {
+    border: 3px solid #fff;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.6);
+}
+												/* ---------- THEME VARIABLES ---------- */
+:root {
+    --bg-color: #0b0b10;
+    --card-bg: #16161d;
+    --text-color: #f1f1f5;
+    --accent-color: #a855f7;
+    --shadow-color: rgba(168,85,247,0.35);
+    --header-bg: #16161d;
+    
+}
+
+												/* ---------- DARK THEME ---------- */
+.dark-theme {
+    --bg-color: #0b0b10;
+    --card-bg: #16161d;
+    --text-color: #f1f1f5; /* white text */
+    --accent-color: #D70F26;
+    --shadow-color: #D70F26;
+    --header-bg: #16161d;
+}
+
+											/* ---------- SOFT PASTEL LIGHT THEME ---------- */
+
+.light-theme {
+    --bg-color: #f8f8ff;
+    --card-bg: linear-gradient(145deg, #ffffff 0%, #f1efff 100%);
+    --text-color: #1e1b2e;
+    --accent-color: #a673ff;
+    --shadow-color: rgba(166,115,255,0.40);
+    --header-bg: linear-gradient(180deg, #ffffffee, #f2eeffdd);
+    --border-color: rgba(166,115,255,0.32);
+     --strong-shadow: rgba(124, 47, 255, 0.6);
+}
+
+.light-theme .card-wrapper {
+    box-shadow: 0 6px 18px var(--strong-shadow);
+}
+
+.light-theme .card-wrapper:hover {
+    box-shadow: 
+        0 18px 50px rgba(124, 47, 255, 0.6),
+        0 10px 30px rgba(124, 47, 255, 0.3);
+}
+
+/* Light theme header box shadow */
+.light-theme .page-header {
+    box-shadow: 
+        0 16px 50px var(--strong-shadow),
+        0 6px 20px var(--strong-shadow);
+}
+
+
+/* Hover effect for stronger shadow */
+.light-theme .page-header:hover {
+    box-shadow: 
+        0 24px 70px var(--strong-shadow),
+        0 10px 40px var(--strong-shadow);
+}
+
+/* Light theme header text shadow */
+.light-theme .page-header h1 {
+    text-shadow: 0 4px 12px var(--strong-shadow), 0 2px 6px var(--strong-shadow);
+}
+
+.light-theme .card-title,
+.light-theme .card-description {
+    color: #2a2542;
+}
+
+.light-theme .card-action {
+    background: linear-gradient(135deg, #7c2fff, #b388ff); /* purple gradient */
+    color: white;
+    box-shadow: 0 4px 18px rgba(124, 47, 255, 0.6);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.light-theme .card-action:hover {
+    background: linear-gradient(135deg, #9d4dff, #c2a0ff); /* stronger purple hover */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(124, 47, 255, 0.7); /* stronger shadow on hover */
+}
+
+/* Light theme overrides */
+body.light-theme .dropbtn {
+    background-color: black; /* Menu button black in light theme */
+    color: white;            /* Text white for contrast */
+}
+
+.light-theme .theme-circle.active {
+    border: 3px solid #a673ff;
+    box-shadow: 0 0 12px rgba(166,115,255,0.55);
+}
+
+
+
+
+												/* ---------- GREEN THEME ---------- */
+.green-theme {
+    --bg-color: #0b100b;
+    --card-bg: #1c2b1c;
+    --text-color: #ffffff; /* white text */
+    --accent-color: #10b981;
+    --shadow-color: #3DED97;
+    --header-bg: #1c2b1c;
+}
+
+												/* ---------- BLUE THEME ---------- */
+.blue-theme {
+    --bg-color: #0b0c20;
+    --card-bg: #1a1a2e;
+    --text-color: #ffffff; /* white text */
+    --accent-color: #3b82f6;
+    --shadow-color: rgba(20, 60, 200, 0.65);
+    --header-bg: #1a1a2e;
+}
+
+												/* ---------- PURPLE THEME ---------- */
+.purple-theme {
+    --bg-color: #0b0b10;
+    --card-bg: #1a0f2e;
+    --text-color: #ffffff; /* white text */
+    --accent-color: #7c2fff;
+    --shadow-color: rgba(124, 47, 255, 0.45);
+    --header-bg: #1a0f2e;
+}
+
+												/* ---------- APPLY VARIABLES ---------- */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+.card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  overflow: hidden;
+}
+
+.card-title, .card-description {
+    color: var(--text-color);
+    transition: color 0.5s ease;
+}
+
+.card-action {
+    background: linear-gradient(135deg, var(--accent-color), #9d4dff);
+    box-shadow: 0 4px 18px var(--shadow-color);
+    color: white;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.page-header {
+    background: var(--header-bg);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.page-header h1 {
+    color: var(--text-color);
+    text-shadow: 0 2px 8px var(--accent-color);
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+												/* ---------- THEME SWITCHER ---------- */
+
+.theme-circle[data-theme="dark"] {
+    background: linear-gradient(135deg, #000000 0%, #000000 50%, #D70F26 50%, #D70F26 100%);
+}
+.theme-circle[data-theme="light"] {
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #7c3aed 50%, #7c3aed 100%);
+}
+.theme-circle[data-theme="green"] {
+    background: linear-gradient(135deg, #000000 0%, #000000 50%, #10b981 50%, #10b981 100%);
+}
+.theme-circle[data-theme="blue"] {
+    background: linear-gradient(135deg, #000000 0%, #000000 50%, #3b82f6 50%, #3b82f6 100%);
+}
+.theme-circle[data-theme="purple"] {
+    background: linear-gradient(135deg, #000000 0%, #000000 50%, #a855f7 50%, #a855f7 100%);
+}
+
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    display: flex;
+    gap: 10px;
+}
+
+.theme-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.theme-circle:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Highlight active theme */
+.theme-circle.active {
+    border: 3px solid #fff;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.6);
+}
+
+												/* ---------- CARD HOVER ---------- */
+.card-wrapper:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px var(--shadow-color);
+    border-color: var(--accent-color);
+}
+
+												/* ---------- BUTTON HOVER ---------- */
+.card-action:hover {
+    background: linear-gradient(135deg, var(--accent-color), lighten(var(--accent-color), 20%));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+											/* ---------- HEADER HOVER  ---------- */
+.page-header:hover {
+    box-shadow: 0 12px 35px var(--shadow-color);
+}
+
+												/* ---------- Snow flakes---------- */
+.snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.snowflake {
+    position: fixed;
+    top: -50px;
+    z-index: 999;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.8); /* Bright snow for dark theme */
+    font-size: 16px;
+    user-select: none;
+    animation: fall linear infinite;
+}
+
+/* darker snow for light theme */
+body.light-theme .snowflake {
+    color: rgba(124, 47, 255, 0.7); /* stronger purple, more visible */
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) translateX(var(--x,0)) rotate(var(--r0,0deg)) scale(var(--s,1));
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity,0.6);
+  }
+  50% {
+    transform: translateY(50vh) translateX(var(--sway,0px)) rotate(var(--r50,180deg)) scale(var(--s,1));
+  }
+  100% {
+    transform: translateY(100vh) translateX(var(--sway,0px)) rotate(var(--r1,360deg)) scale(var(--s,1));
+    opacity: var(--opacity,0.6);
+  }
+}
+
+/* ---------- DROPDOWN CONTAINER ---------- */
+.dropdown {
+    position: fixed;
+    top: 20px;
+    left: 20px;  /* move to left */
+    z-index: 1000;
+}
+/* ---------- DROPDOWN BUTTON ---------- */
+.dropbtn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.dropbtn:hover {
+    box-shadow: 0 4px 14px var(--shadow-color);
+    transform: translateY(-2px);
+}
+
+/* ---------- DROPDOWN CONTENT ---------- */
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 45px;
+    left: 0; /* align left edge with button */
+    background-color: var(--card-bg);
+    min-width: 220px; /* adjust width as needed */
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--shadow-color);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+
+/* Show dropdown when .show class is added by JS */
+.dropdown-content.show {
+    display: block;
+}
+
+/* ---------- HEADER INSIDE DROPDOWN ---------- */
+.dropdown-content h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* ---------- THEME CIRCLES ---------- */
+.dropdown-content .theme-options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.theme-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.theme-circle:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.theme-circle.active {
+    border: 3px solid var(--accent-color);
+    box-shadow: 0 0 12px rgba(255,255,255,0.55);
+}
+
+/* ---------- TOGGLE SWITCH ---------- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* ---------- OPTIONAL: SMALL HR BETWEEN SECTIONS ---------- */
+.dropdown-content hr {
+    border: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin: 8px 0;
+}
+
+
+/* ---------- quick search ---------- */
+.search-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#quickSearch {
+    width: 300px;
+    max-width: 90%;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(124,47,255,0.5);
+    box-shadow: 0 4px 12px rgba(124,47,255,0.3);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#quickSearch:focus {
+    outline: none;
+    box-shadow: 0 6px 20px rgba(124,47,255,0.6);
+    transform: scale(1.02);
+}
+
+/* ---------- Favorite Button---------- */
+.favorite-star {
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #f1c40f; /* gold star */
+    margin-right: 8px;
+}
+
+.favorite-star.filled {
+    color: #f39c12; /* darker gold when filled */
+}
+
+/* Ensure card wrapper displays flex so star is visible */
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Optional: position the star at top-right corner */
+.favorite-star {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}

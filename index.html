@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<script src="Javascript.js" defer></script>
+<title>Schulportal – Dienste & Angebote</title>
+</head>
+<body>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown">
+        <button id="menuBtn" class="dropbtn">Menu ⚙️</button>
+        <div id="dropdownMenu" class="dropdown-content">
+            <h4>Color Theme</h4>
+            <div class="theme-options">
+                <div class="theme-circle" data-theme="light" title="Light"></div>
+                <div class="theme-circle" data-theme="dark" title="Dark"></div>
+                <div class="theme-circle" data-theme="green" title="Green"></div>
+                <div class="theme-circle" data-theme="blue" title="Blue"></div>
+                <div class="theme-circle" data-theme="purple" title="Purple"></div>
+            </div>
+
+            <hr>
+
+            <h4>Background Effects</h4>
+            <label class="switch">
+                <input type="checkbox" id="toggle-effects" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Snow -->
+    <div class="snow-container" id="snow"></div>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1>LGS Digital</h1>
+    </header>
+
+    <!-- Search bar and favorites toggle -->
+    <div class="search-container">
+        <input type="text" id="quickSearch" placeholder="Search tools...">
+        <button id="toggleFavorites" type="button">★ Favorites</button>
+    </div>
+
+    <!-- Cards Container -->
+    <div class="cards-container">
+
+        <!-- iServ -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/iserv-Kopie-1-550x550.png" alt="iServ" />
+            <div class="card-content">
+                <h3 class="card-title">iServ</h3>
+                <p class="card-description">Pädagogisches Webportal für Schüler*innen und Lehrer*innen.</p>
+                <a class="card-action" href="http://lgs-hu.eu" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Digitales Sekretariat -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/sekreteriat-550x550.png" alt="Digitales Sekretariat" />
+            <div class="card-content">
+                <h3 class="card-title">Digitales Sekretariat</h3>
+                <p class="card-description">Digitaler Verwaltungsbereich für Schüler*innen.</p>
+                <a class="card-action" href="https://ludwiggeisslerschulede.sharepoint.com/sites/DigitaleVerwaltungfrSchlerinnenundSchler" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Homepage -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/homepage-550x550.png" alt="Homepage" />
+            <div class="card-content">
+                <h3 class="card-title">Homepage</h3>
+                <p class="card-description">Offizielle Webseite unserer Schule.</p>
+                <a class="card-action" href="http://ludwig-geissler-schule.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Stunden- und Vertretungsplan -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/stundenplan-Kopie-550x550.png" alt="Stundenplan" />
+            <div class="card-content">
+                <h3 class="card-title">Stunden- & Vertretungsplan</h3>
+                <p class="card-description">Digitaler Stunden- und Vertretungsplan für Schüler*innen & Lehrkräfte.</p>
+                <a class="card-action" href="https://plan.lgsit.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Raumnummernsuche -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/raumv2-550x550.png" alt="Raumnummernsuche" />
+            <div class="card-content">
+                <h3 class="card-title">Raumnummernsuche</h3>
+                <p class="card-description">Schnelle Suche nach allen Räumen im Schulgebäude.</p>
+                <a class="card-action" href="https://lgsit.de/raumnummer/" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/09/faq-550x550.png" alt="FAQ" />
+            <div class="card-content">
+                <h3 class="card-title">FAQ</h3>
+                <p class="card-description">Antworten auf häufig gestellte technische Fragen.</p>
+                <a class="card-action" href="https://faq.lgsit.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Moodle -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/moodle-550x550.png" alt="Moodle" />
+            <div class="card-content">
+                <h3 class="card-title">Moodle</h3>
+                <p class="card-description">Lernplattform für digitalen Unterricht.</p>
+                <a class="card-action" href="https://moodle.lgsit.de/moodle/" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Microsoft 365 -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/m365-550x550.png" alt="Microsoft 365" />
+            <div class="card-content">
+                <h3 class="card-title">Microsoft 365</h3>
+                <p class="card-description">Microsoft 365 Copilot.</p>
+                <a class="card-action" href="https://www.office.com" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- LGS Projekte -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/lgs-projekte-550x550.png" alt="LGS Projekte" />
+            <div class="card-content">
+                <h3 class="card-title">Projekte der Ludwig-Geißler-Schule</h3>
+                <p class="card-description">Microsoft 365 Copilot.</p>
+                <a class="card-action" href="https://projekte.lgsit.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- LGS Wiki -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/05/lgswiki-550x550.png" alt="LGS Wiki" />
+            <div class="card-content">
+                <h3 class="card-title">Wiki</h3>
+                <p class="card-description">Wiki der Ludwig-Geißler-Schule.</p>
+                <a class="card-action" href="https://ludwiggeisslerschulede.sharepoint.com/sites/LGSWiki" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Krisenmanagement -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/lgs-Krisenmanagement-550x550.png" alt="Krisenmanagement" />
+            <div class="card-content">
+                <h3 class="card-title">Krisenmanagement</h3>
+                <p class="card-description">Krisenmanagement.</p>
+                <a class="card-action" href="https://ludwiggeisslerschulede.sharepoint.com/sites/KrisenmanagementanderLGS" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Digitale Verwaltung -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/digitaleverwaltung-550x550.png" alt="Digitale Verwaltung" />
+            <div class="card-content">
+                <h3 class="card-title">Digitale Verwaltung</h3>
+                <p class="card-description">Digitale Verwaltung.</p>
+                <a class="card-action" href="https://verwaltung.lgsit.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- BG intern SharePoint -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/09/sp-bg-2-550x550.png" alt="BG intern" />
+            <div class="card-content">
+                <h3 class="card-title">BG intern SharePoint</h3>
+                <p class="card-description">BG intern SharePoint.</p>
+                <a class="card-action" href="https://ludwiggeisslerschulede.sharepoint.com/sites/bg" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- FOS intern SharePoint -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2024/08/fos-intern-1-550x550.png" alt="FOS intern" />
+            <div class="card-content">
+                <h3 class="card-title">FOS intern SharePoint</h3>
+                <p class="card-description">FOS intern SharePoint.</p>
+                <a class="card-action" href="https://ludwiggeisslerschulede.sharepoint.com/sites/FOSintern" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Proxmox -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/08/proxmox-550x550.png" alt="Proxmox" />
+            <div class="card-content">
+                <h3 class="card-title">Proxmox</h3>
+                <p class="card-description">Serverbetriebssystem.</p>
+                <a class="card-action" href="https://proxmox.lgsit.de" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Gitlab -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/09/gitlab-550x550.png" alt="Gitlab" />
+            <div class="card-content">
+                <h3 class="card-title">Gitlab</h3>
+                <p class="card-description">DevSecOps-Platform.</p>
+                <a class="card-action" href="https://gitlab.lgsit.de/" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+        <!-- Draw.io -->
+        <div class="card-wrapper">
+            <img class="card-img" src="https://lgs.digital/wp-content/uploads/2020/09/srawio-550x550.png" alt="Draw.io" />
+            <div class="card-content">
+                <h3 class="card-title">Draw.io</h3>
+                <p class="card-description">Mind Map.</p>
+                <a class="card-action" href="https://draw.lgsit.de/" target="_blank">Öffnen</a>
+            </div>
+        </div>
+
+    </div> <!-- end cards-container -->
+
+</body>
+</html>
