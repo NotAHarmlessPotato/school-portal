@@ -733,4 +733,153 @@ input:checked + .slider:before {
     right: 8px;
 }
 
+/* ============================
+   ULTRA KONAMI MODE STYLES
+============================ */
 
+/* R/ainbow background */
+.ultra-konami {
+    --bg-color: #1a1a1a !important;
+    background: linear-gradient(135deg, #ff0080, #ff8c00, #40e0d0, #7c2fff);
+    background-size: 400% 400%;
+    animation: rainbowBG 8s ease infinite;
+    transition: all 0.6s ease;
+    position: relative; /* for sparkles */
+}
+
+/* Animate background */
+@keyframes rainbowBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Cards */
+.ultra-konami .card-wrapper {
+    position: relative;
+    animation: cardGlow 6s ease infinite alternate, cardShake 0.6s ease infinite;
+    box-shadow: 0 0 25px rgba(255,0,200,0.4),
+                0 0 40px rgba(0,200,255,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: box-shadow 0.5s ease, border 0.5s ease, transform 0.3s ease;
+}
+
+/* Card glow */
+@keyframes cardGlow {
+    0% { box-shadow: 0 0 25px rgba(255,0,200,0.5), 0 0 40px rgba(0,200,255,0.3); }
+    50% { box-shadow: 0 0 35px rgba(255,200,0,0.5), 0 0 50px rgba(0,255,150,0.4); }
+    100% { box-shadow: 0 0 25px rgba(255,0,200,0.5), 0 0 40px rgba(0,200,255,0.3); }
+}
+
+/* Card shake */
+@keyframes cardShake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+/* Buttons */
+.ultra-konami .card-action {
+    background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #7c2fff);
+    background-size: 400% 400%;
+    animation: buttonRainbow 3s ease infinite, buttonPulse 2s infinite;
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Button gradient animation */
+@keyframes buttonRainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Button pulse */
+@keyframes buttonPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Sparkles */
+.ultra-konami .card-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #7c2fff);
+    box-shadow: 0 0 10px #ff0080, 0 0 10px #40e0d0;
+    animation: sparkle 2s infinite linear;
+}
+
+@keyframes sparkle {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-10px) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(0) rotate(90deg); opacity: 0.5; }
+}
+
+/* Konami popup */
+.konami-popup {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.7);
+    background: rgba(0,0,0,0.75);
+    padding: 12px 20px;
+    border-radius: 14px;
+    color: white;
+    font-size: 1rem;
+    opacity: 0;
+    transition: 0.4s ease;
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    border: 2px solid transparent;
+    background-clip: padding-box, border-box;
+    border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #7c2fff) 1;
+}
+
+.konami-popup.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    animation: popupGlow 3s ease infinite;
+}
+
+@keyframes popupGlow {
+    0% { box-shadow: 0 0 8px #ff0080; }
+    50% { box-shadow: 0 0 18px #40e0d0; }
+    100% { box-shadow: 0 0 8px #7c2fff; }
+}
+
+/* Particle trail */
+.ultra-konami-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #7c2fff);
+    box-shadow: 0 0 10px #ff0080, 0 0 10px #40e0d0;
+    animation: particleFade 0.6s forwards;
+    z-index: 9999;
+}
+
+@keyframes particleFade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+
+/* Shadows toggle */
+.no-shadows * {
+  box-shadow: none !important;
+}
+
+/* Example: normal shadows for cards */
+.card-wrapper {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: box-shadow 0.3s ease;
+}
