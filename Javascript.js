@@ -162,4 +162,165 @@ document.addEventListener('DOMContentLoaded', () => {
   reorderCards();
   updateCardVisibility();
 
+ /* ============================
+       ULTRA KONAMI MODE + BANKAI
+  ============================ */
+
+  // Konami key sequence (case-sensitive)
+  const konamiPattern = [
+    "ArrowUp","ArrowUp",
+    "ArrowDown","ArrowDown",
+    "ArrowLeft","ArrowRight",
+    "ArrowLeft","ArrowRight",
+    "b","a"
+  ];
+  let konamiPos = 0;
+
+  // Initialize state from localStorage
+  let isUltraKonamiActive = localStorage.getItem("secretMode") === "on";
+  if (isUltraKonamiActive) document.body.classList.add("ultra-konami");
+
+  // Key detection
+  document.addEventListener("keydown", (e) => {
+    if (e.key === konamiPattern[konamiPos]) {
+      konamiPos++;
+      if (konamiPos === konamiPattern.length) {
+        konamiPos = 0;
+        toggleUltraKonamiMode();
+      }
+    } else {
+      konamiPos = 0;
+    }
+  });
+
+  // Toggle Ultra Konami Mode
+  function toggleUltraKonamiMode() {
+    isUltraKonamiActive = !isUltraKonamiActive;
+    document.body.classList.toggle("ultra-konami", isUltraKonamiActive);
+    localStorage.setItem("secretMode", isUltraKonamiActive ? "on" : "off");
+    showKonamiPopup(isUltraKonamiActive ? "🌈 Ultra Konami ON!" : "❌ Ultra Konami OFF!");
+  }
+
+  // Popup message
+  function showKonamiPopup(text) {
+    const note = document.createElement("div");
+    note.className = "konami-popup";
+    note.textContent = text;
+    document.body.appendChild(note);
+    setTimeout(() => note.classList.add("show"), 10);
+    setTimeout(() => note.classList.remove("show"), 2000);
+    setTimeout(() => note.remove(), 2600);
+  }
+
+  // Particle trail
+  document.addEventListener("mousemove", (e) => {
+    if (!isUltraKonamiActive) return;
+    const particle = document.createElement("div");
+    particle.className = "ultra-konami-particle";
+    particle.style.left = `${e.pageX}px`;
+    particle.style.top = `${e.pageY}px`;
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 600); // match CSS animation duration
+  });
+
+  /* ============================
+       BANKAI SECRET (dark theme circle)
+  ============================ */
+
+  let bankaiClickCount = 0;
+  const darkThemeCircle = document.querySelector('.theme-circle[data-theme="dark"]');
+
+  if (darkThemeCircle) {
+    darkThemeCircle.addEventListener("click", () => {
+      bankaiClickCount++;
+      clearTimeout(darkThemeCircle._resetTimer);
+      darkThemeCircle._resetTimer = setTimeout(() => bankaiClickCount = 0, 2500);
+
+      if (bankaiClickCount >= 5) {
+        bankaiClickCount = 0;
+        playBankaiAnimation();
+      }
+    });
+  }
+
+  function playBankaiAnimation() {
+    const overlay = document.createElement("div");
+    overlay.className = "bakai-overlay";
+
+    const aura = document.createElement("div");
+    aura.className = "bakai-glow";
+    overlay.appendChild(aura);
+
+    const flash = document.createElement("div");
+    flash.className = "bakai-flash";
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(flash);
+    document.body.classList.add("bakai-shake");
+
+    // Particle explosion
+    const cards = Array.from(document.querySelectorAll(".card-wrapper"));
+    for (let i = 0; i < 80; i++) {
+      const p = document.createElement("div");
+      p.className = "bakai-particle";
+      p.style.left = "50%";
+      p.style.top = "50%";
+      const x = (Math.random() - 0.5) * 1000;
+      const y = (Math.random() - 0.5) * 600;
+      p.style.setProperty("--x", `${x}px`);
+      p.style.setProperty("--y", `${y}px`);
+      p.style.animationDuration = `${Math.random() * 0.6 + 0.6}s`;
+      overlay.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }
+
+    // Glow cards
+    cards.forEach(card => card.classList.add("bakai-card-glow"));
+
+    // Flash effect
+    flash.style.opacity = "1";
+    setTimeout(() => flash.style.opacity = "0", 150);
+
+    // Fade overlay
+    setTimeout(() => overlay.style.opacity = "1", 50);
+
+    // Optional sound
+    try {
+      const audio = new Audio("https://freesound.org/data/previews/276/276020_5121236-lq.mp3");
+      audio.play().catch(() => {});
+    } catch (err) {}
+
+    // Cleanup
+    setTimeout(() => {
+      try { overlay.remove(); } catch(e){}
+      try { flash.remove(); } catch(e){}
+      document.body.classList.remove("bakai-shake");
+      cards.forEach(card => card.classList.remove("bakai-card-glow"));
+    }, 5000);
+  }
+
+  // ---------- SHADOW TOGGLE ----------
+const shadowToggle = document.getElementById("shadowToggle");
+if (shadowToggle) {
+  // default shadows OFF
+  if (localStorage.getItem("shadowsEnabled") === null || localStorage.getItem("shadowsEnabled") === "false") {
+      document.body.classList.add("no-shadows");
+      shadowToggle.checked = false;
+  } else {
+      document.body.classList.remove("no-shadows");
+      shadowToggle.checked = true;
+  }
+
+  shadowToggle.addEventListener("change", () => {
+      if (shadowToggle.checked) {
+          document.body.classList.remove("no-shadows");
+          localStorage.setItem("shadowsEnabled", "true");
+      } else {
+          document.body.classList.add("no-shadows");
+          localStorage.setItem("shadowsEnabled", "false");
+      }
+  });
+}
+
 });
+
