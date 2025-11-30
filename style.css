@@ -1,6 +1,6 @@
    												/* ---------- GENERAL STYLING ---------- */
 .page-header {
-    position: relative; /* important for ::before */
+    position: relative; 
     text-align: center;
     margin-bottom: 40px;
     padding: 50px 20px;
@@ -13,7 +13,7 @@
 .page-header h1 {
     position: relative; /* ensures text above dots */
     z-index: 2;
-    font-family: 'Playfair Display', serif; /* your fancy font */
+    font-family: 'Playfair Display', serif; 
     font-size: 3rem;
     font-weight: 700;
     color: var(--text-color);
@@ -29,7 +29,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* behind text */
+    z-index: 0; 
     pointer-events: none;
     background-image: radial-gradient(rgba(124,47,255,0.25) 2px, transparent 2px);
     background-size: 20px 20px;
@@ -54,7 +54,7 @@
     justify-content: center;
     max-width: 1400px;
     margin: auto;
-    padding: 0 10px; /* small padding to prevent card touching edges */
+    padding: 0 10px; 
 }
 
     												/* ---------- CARD WRAPPER ---------- */
@@ -68,9 +68,9 @@
     box-shadow: 0 6px 18px var(--strong-shadow, var(--shadow-color));
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* ensures buttons align at bottom */
+    justify-content: space-between; 
     transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
-    min-height: 380px; /* ensures uniform card height */
+    min-height: 380px; 
         transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
     will-change: transform, box-shadow;
 }
@@ -118,7 +118,7 @@ body.light-theme .favorite-star {
   box-shadow: 0 8px 22px rgba(0,0,0,0.35);
 }
 
-/* filled (favorite) state: gold / or theme accent if you prefer purple) */
+/* filled (favorite) */
 .favorite-star.filled {
   color: #ffd166; /* gold filled star */
   background: radial-gradient(circle, rgba(255,214,102,0.12), transparent 50%);
@@ -152,31 +152,31 @@ body.light-theme .favorite-star {
     flex-direction: column;
     justify-content: space-between; /* keep button at bottom */
     flex-grow: 1;
-    padding: 20px; /* optional for spacing */
+    padding: 20px; 
 }
 
 .card-title,
 .card-description {
-    text-align: center;  /* centers text horizontally */
+    text-align: center;  
 }
 
-/* Optional: smoother reading */
+/* smoother reading */
 .card-title {
     margin-bottom: 8px;
 }
 
 .card-description {
     margin-bottom: 18px;
-    line-height: 1.6; /* slightly more readable */
+    line-height: 1.6; 
 }
 
    												 /* ---------- BUTTON / BADGE ---------- */
 .card-action {
-    display: block;                  /* block-level for width control */
-    width: 200px;                     /* fixed width for all buttons */
-    max-width: 90%;                   /* responsive fallback on small screens */
+    display: block;                  
+    width: 200px;                     
+    max-width: 90%;                  
     text-align: center;
-    margin: 0 auto;                   /* center inside card */
+    margin: 0 auto;                  
     padding: 11px 16px;
     background: linear-gradient(135deg, #7c2fff, #b388ff);
     color: white;
@@ -207,10 +207,10 @@ body.light-theme .favorite-star {
     text-align: center;
     margin-bottom: 40px;
     padding: 30px 20px;
-    background: var(--header-bg); /* now uses theme variable */
+    background: var(--header-bg); 
     border-radius: 20px;
 
-    /* Uses THEME shadow instead of fixed purple */
+    
     box-shadow: 0 8px 25px var(--shadow-color);
 
     transition: box-shadow 0.3s ease, background 0.3s ease;
@@ -285,7 +285,7 @@ body.light-theme .favorite-star {
 .dark-theme {
     --bg-color: #0b0b10;
     --card-bg: #16161d;
-    --text-color: #f1f1f5; /* white text */
+    --text-color: #f1f1f5; 
     --accent-color: #D70F26;
     --shadow-color: #D70F26;
     --header-bg: #16161d;
@@ -527,7 +527,7 @@ body {
 
 /* darker snow for light theme */
 body.light-theme .snowflake {
-    color: rgba(124, 47, 255, 0.7); /* stronger purple, more visible */
+    color: rgba(124, 47, 255, 0.7); 
 }
 
 @keyframes fall {
@@ -551,7 +551,7 @@ body.light-theme .snowflake {
 .dropdown {
     position: fixed;
     top: 20px;
-    left: 20px;  /* move to left */
+    left: 20px;  
     z-index: 1000;
 }
 /* ---------- DROPDOWN BUTTON ---------- */
@@ -574,12 +574,12 @@ body.light-theme .snowflake {
 
 /* ---------- DROPDOWN CONTENT ---------- */
 .dropdown-content {
-    display: none; /* Hidden by default */
+    display: none; 
     position: absolute;
     top: 45px;
-    left: 0; /* align left edge with button */
+    left: 0; 
     background-color: var(--card-bg);
-    min-width: 220px; /* adjust width as needed */
+    min-width: 220px; 
     padding: 12px;
     border-radius: 12px;
     box-shadow: 0 8px 25px var(--shadow-color);
@@ -588,7 +588,7 @@ body.light-theme .snowflake {
 }
 
 
-/* Show dropdown when .show class is added by JS */
+/* Show dropdown */
 .dropdown-content.show {
     display: block;
 }
@@ -718,7 +718,7 @@ input:checked + .slider:before {
     color: #f39c12; /* darker gold when filled */
 }
 
-/* Ensure card wrapper displays flex so star is visible */
+
 .card-wrapper {
     display: flex;
     flex-direction: column;
@@ -726,7 +726,7 @@ input:checked + .slider:before {
     position: relative;
 }
 
-/* Optional: position the star at top-right corner */
+
 .favorite-star {
     position: absolute;
     top: 8px;
@@ -744,7 +744,7 @@ input:checked + .slider:before {
     background-size: 400% 400%;
     animation: rainbowBG 8s ease infinite;
     transition: all 0.6s ease;
-    position: relative; /* for sparkles */
+    position: relative; 
 }
 
 /* Animate background */
@@ -883,3 +883,77 @@ input:checked + .slider:before {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   transition: box-shadow 0.3s ease;
 }
+
+/* ---------- BLOOD MOON THEME ---------- */
+.blood-moon-theme {
+    --bg-color: #1a040a;           
+    --card-bg: #2e050f;            
+    --text-color: #f5e6e6;         
+    --accent-color: #8b0000;       
+    --shadow-color: rgba(139, 0, 0, 0.7); 
+    --header-bg: linear-gradient(180deg, #1a040a, #2e050f); 
+    --strong-shadow: rgba(139, 0, 0, 0.8);
+}
+
+.blood-moon-theme body,
+.blood-moon-theme {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* ---------- Snowflakes recolor for Blood Moon ---------- */
+.blood-moon-theme .snowflake {
+    color: #8b0000 !important;
+    text-shadow: 0 0 6px #ff0000;
+    opacity: 0.9;
+    font-size: 18px;
+}
+
+/* ---------- Blood Drips ---------- */
+.blood-drip {
+    position: absolute;
+    top: -20px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    background: linear-gradient(to bottom, #ff0000 0%, #8b0000 100%);
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 999;
+    filter: drop-shadow(0 0 4px #ff0000);
+    animation-timing-function: ease-in;
+}
+
+/* ---------- Blood Splats ---------- */
+.blood-splat {
+    position: absolute;
+    background: radial-gradient(circle, #ff0000 0%, #8b0000 100%);
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: splatFade 0.8s forwards;
+    z-index: 999;
+}
+
+@keyframes splatFade {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* ---------- Subtle Fog Overlay ---------- */
+.blood-moon-theme::after {
+    content: '';
+    position: fixed;
+    top: 0; left: -100px; 
+    width: calc(100% + 200px);
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(139,0,0,0.05), rgba(0,0,0,0.3));
+    z-index: 1000;
+    animation: fogMove 60s linear infinite;
+}
+
+@keyframes fogMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(200px); }
+}
+
