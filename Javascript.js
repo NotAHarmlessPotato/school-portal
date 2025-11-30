@@ -162,11 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
   reorderCards();
   updateCardVisibility();
 
- /* ============================
-       ULTRA KONAMI MODE + BANKAI
-  ============================ */
+ /* ==ULTRA KONAMI MODE*/
 
-  // Konami key sequence (case-sensitive)
+  // Konami key sequence 
   const konamiPattern = [
     "ArrowUp","ArrowUp",
     "ArrowDown","ArrowDown",
@@ -223,81 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => particle.remove(), 600); // match CSS animation duration
   });
 
-  /* ============================
-       BANKAI SECRET (dark theme circle)
-  ============================ */
-
-  let bankaiClickCount = 0;
-  const darkThemeCircle = document.querySelector('.theme-circle[data-theme="dark"]');
-
-  if (darkThemeCircle) {
-    darkThemeCircle.addEventListener("click", () => {
-      bankaiClickCount++;
-      clearTimeout(darkThemeCircle._resetTimer);
-      darkThemeCircle._resetTimer = setTimeout(() => bankaiClickCount = 0, 2500);
-
-      if (bankaiClickCount >= 5) {
-        bankaiClickCount = 0;
-        playBankaiAnimation();
-      }
-    });
-  }
-
-  function playBankaiAnimation() {
-    const overlay = document.createElement("div");
-    overlay.className = "bakai-overlay";
-
-    const aura = document.createElement("div");
-    aura.className = "bakai-glow";
-    overlay.appendChild(aura);
-
-    const flash = document.createElement("div");
-    flash.className = "bakai-flash";
-
-    document.body.appendChild(overlay);
-    document.body.appendChild(flash);
-    document.body.classList.add("bakai-shake");
-
-    // Particle explosion
-    const cards = Array.from(document.querySelectorAll(".card-wrapper"));
-    for (let i = 0; i < 80; i++) {
-      const p = document.createElement("div");
-      p.className = "bakai-particle";
-      p.style.left = "50%";
-      p.style.top = "50%";
-      const x = (Math.random() - 0.5) * 1000;
-      const y = (Math.random() - 0.5) * 600;
-      p.style.setProperty("--x", `${x}px`);
-      p.style.setProperty("--y", `${y}px`);
-      p.style.animationDuration = `${Math.random() * 0.6 + 0.6}s`;
-      overlay.appendChild(p);
-      setTimeout(() => p.remove(), 1200);
-    }
-
-    // Glow cards
-    cards.forEach(card => card.classList.add("bakai-card-glow"));
-
-    // Flash effect
-    flash.style.opacity = "1";
-    setTimeout(() => flash.style.opacity = "0", 150);
-
-    // Fade overlay
-    setTimeout(() => overlay.style.opacity = "1", 50);
-
-    // Optional sound
-    try {
-      const audio = new Audio("https://freesound.org/data/previews/276/276020_5121236-lq.mp3");
-      audio.play().catch(() => {});
-    } catch (err) {}
-
-    // Cleanup
-    setTimeout(() => {
-      try { overlay.remove(); } catch(e){}
-      try { flash.remove(); } catch(e){}
-      document.body.classList.remove("bakai-shake");
-      cards.forEach(card => card.classList.remove("bakai-card-glow"));
-    }, 5000);
-  }
 
   // ---------- SHADOW TOGGLE ----------
 const shadowToggle = document.getElementById("shadowToggle");
@@ -322,5 +245,158 @@ if (shadowToggle) {
   });
 }
 
+/* ---------- BLOOD MOON THEME TOGGLE & ENHANCED BLOOD EFFECTS ---------- */
+const bloodMoonSequence = ['b','l','o','o','d'];
+let bloodMoonPos = 0;
+let bloodDripInterval;
+let isBloodMoonActive = localStorage.getItem('theme') === 'blood-moon-theme';
+
+// Initialize Blood Moon if active
+if (isBloodMoonActive) {
+    document.body.classList.add('blood-moon-theme');
+    themeCircles.forEach(c => c.classList.remove('active'));
+    const bloodMoonCircle = dropdownMenu?.querySelector('.theme-circle[data-theme="blood-moon"]');
+    if (bloodMoonCircle) bloodMoonCircle.classList.add('active');
+    startBloodDrips();
+}
+
+// Key sequence detection
+document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === bloodMoonSequence[bloodMoonPos]) {
+        bloodMoonPos++;
+        if (bloodMoonPos === bloodMoonSequence.length) {
+            bloodMoonPos = 0;
+            toggleBloodMoonTheme();
+        }
+    } else {
+        bloodMoonPos = 0;
+    }
 });
 
+// Spawn drips
+function startBloodDrips() {
+    function spawnDrip() {
+        if (!isBloodMoonActive) return;
+
+        // Randomize drip properties
+        const xPos = Math.random() * window.innerWidth;
+        const width = 4 + Math.random() * 4;
+        const height = 15 + Math.random() * 15;
+        const duration = 1.5 + Math.random() * 1.5; // faster fall
+        const drift = (Math.random() - 0.5) * 20; // horizontal wobble ±10px
+
+        createDrip(xPos, width, height, duration, drift);
+
+        // Random spawn interval for irregular fall
+        setTimeout(spawnDrip, 100 + Math.random() * 300);
+    }
+
+    spawnDrip();
+}
+
+function stopBloodDrips() {
+    document.querySelectorAll('.blood-drip').forEach(d => d.remove());
+    document.querySelectorAll('.blood-splat').forEach(s => s.remove());
+    
+}
+
+// Helper to create individual drip
+function createDrip(xPos, width, height, duration, drift) {
+    const drip = document.createElement('div');
+    drip.classList.add('blood-drip');
+    drip.style.left = `${xPos}px`;
+    drip.style.width = `${width}px`;
+    drip.style.height = `${height}px`;
+
+    // Animate drip using JS for more control
+    const start = performance.now();
+    function animate(time) {
+        const elapsed = (time - start) / 1000; // seconds
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Y position with ease-in effect
+        const y = progress * window.innerHeight;
+
+        // Horizontal drift with wobble
+        const x = xPos + Math.sin(progress * Math.PI * 2) * drift;
+
+        drip.style.transform = `translate(${x - xPos}px, ${y}px)`;
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            createSplat(x);
+            drip.remove();
+        }
+    }
+    requestAnimationFrame(animate);
+    document.body.appendChild(drip);
+}
+
+// Create splat with mini drops
+function createSplat(xPos) {
+    const mainSplat = document.createElement('div');
+    mainSplat.classList.add('blood-splat');
+    mainSplat.style.left = `${xPos}px`;
+    mainSplat.style.top = `calc(100vh - 10px)`;
+    mainSplat.style.width = '10px';
+    mainSplat.style.height = '10px';
+    document.body.appendChild(mainSplat);
+
+    for (let i = 0; i < 2; i++) {
+        const mini = document.createElement('div');
+        mini.classList.add('blood-splat');
+        mini.style.left = `calc(${xPos}px + ${Math.random() * 20 - 10}px)`;
+        mini.style.top = `calc(100vh - ${Math.random() * 8 + 5}px)`;
+        mini.style.width = `${Math.random() * 6 + 4}px`;
+        mini.style.height = `${Math.random() * 6 + 4}px`;
+        document.body.appendChild(mini);
+        setTimeout(() => mini.remove(), 800);
+    }
+
+    setTimeout(() => mainSplat.remove(), 800);
+}
+
+// Toggle Blood Moon
+function toggleBloodMoonTheme() {
+    if (isBloodMoonActive) {
+        stopBloodDrips();
+        const savedTheme = localStorage.getItem('theme-default') || 'light-theme';
+        document.body.classList.remove('blood-moon-theme');
+        document.body.classList.add(savedTheme);
+
+        themeCircles.forEach(c => c.classList.remove('active'));
+        document.querySelector(`.theme-circle[data-theme="${savedTheme.replace('-theme','')}"]`)?.classList.add('active');
+
+        localStorage.setItem('theme', savedTheme);
+        isBloodMoonActive = false;
+        showKonamiPopup('🌙 Blood Moon Deactivated');
+    } else {
+        const currentTheme = localStorage.getItem('theme') || 'light-theme';
+        localStorage.setItem('theme-default', currentTheme);
+
+        document.body.classList.remove('dark-theme','light-theme','green-theme','blue-theme','purple-theme');
+        document.body.classList.add('blood-moon-theme');
+
+        themeCircles.forEach(c => c.classList.remove('active'));
+        const bloodMoonCircle = dropdownMenu?.querySelector('.theme-circle[data-theme="blood-moon"]');
+        if (bloodMoonCircle) bloodMoonCircle.classList.add('active');
+
+        localStorage.setItem('theme','blood-moon-theme');
+        isBloodMoonActive = true;
+        startBloodDrips();
+        showKonamiPopup('🌑 Blood Moon Activated!');
+    }
+}
+
+// Optional popup
+function showKonamiPopup(text) {
+    const note = document.createElement('div');
+    note.className = 'konami-popup';
+    note.textContent = text;
+    document.body.appendChild(note);
+    setTimeout(() => note.classList.add('show'), 10);
+    setTimeout(() => note.classList.remove('show'), 2000);
+    setTimeout(() => note.remove(), 2600);
+}
+});
