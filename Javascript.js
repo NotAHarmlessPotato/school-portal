@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------- INITIALIZE ----------
-  // Save original order
+ 
   cards.forEach((card, index) => card.dataset.originalIndex = index);
   reorderCards();
   updateCardVisibility();
@@ -308,7 +308,7 @@ function createDrip(xPos, width, height, duration, drift) {
     drip.style.width = `${width}px`;
     drip.style.height = `${height}px`;
 
-    // Animate drip using JS for more control
+    // Animate drip using JS 
     const start = performance.now();
     function animate(time) {
         const elapsed = (time - start) / 1000; // seconds
@@ -389,7 +389,7 @@ function toggleBloodMoonTheme() {
     }
 }
 
-// Optional popup
+
 function showKonamiPopup(text) {
     const note = document.createElement('div');
     note.className = 'konami-popup';
@@ -400,3 +400,4 @@ function showKonamiPopup(text) {
     setTimeout(() => note.remove(), 2600);
 }
 });
+
